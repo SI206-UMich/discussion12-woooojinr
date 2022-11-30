@@ -27,8 +27,8 @@ def add_employee(filename, cur, conn):
     f = open(os.path.abspath(os.path.join(os.path.dirname(__file__), filename)))
     file_data = f.read()
     f.close()
-    # THE REST IS UP TO YOU
     js_data = json.loads(file_data)
+
     for item in js_data:
         employee_id = int(item['employee_id'])
         first_name = item['first_name']
@@ -49,7 +49,8 @@ def job_and_hire_date(cur, conn):
 # TASK 3: IDENTIFY PROBLEMATIC SALARY DATA
 # Apply JOIN clause to match individual employees
 def problematic_salary(cur, conn):
-    pass
+    cur.execute("SELECT employees.first_name, employees.last_name FROM employees JOIN Jobs ON employees.job_id = Jobs.job_id WHERE employees.salary ? Jobs.max_saary OR employees.salary < jobs.min_salary")
+    return cur.fetchall()
 
 # TASK 4: VISUALIZATION
 def visualization_salary_data(cur, conn):
